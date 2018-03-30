@@ -17,7 +17,7 @@
     <string name="power_off_droplet">Power Off Droplet</string>
     <string name="power_on_droplet">Power On Droplet</string>
 
-    <string name="title_activity_droplet">DropletActivity</string>
+    <string name="title_activity_droplet">Home</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -49,7 +49,7 @@
     <string name="ipv6_cannot_be_disabled">IPv6 cannot be disabled</string>
     <string name="private_network_cannot_be_disabled">Private network cannot be disabled</string>
 
-    <string name="title_activity_droplet_create">DropletCreateActivity</string>
+    <string name="title_activity_droplet_create">Create New Droplet</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="next">Next</string>
@@ -78,7 +78,7 @@
     <string name="static_droplet_region">Bangalore</string>
     <string name="static_email_account">android.studio@android.com</string>
     <string name="login">Login</string>
-    <string name="signup">Sign-Up</string>
+    <string name="get_started">Get Started</string>
 
     <string name="dialog_delete_droplet_msg">Are you sure you would like to delete %s? This is irreversible. We will destroy your Droplet and all associated backups. All Droplet data will be scrubbed and irretrievable.</string>
     <string name="dialog_confirm">Confirm</string>
@@ -111,7 +111,7 @@
 
     <string name="signup_url">https://cloud.digitalocean.com/registrations/new</string>
     <string name="token">token</string>
-    <string name="checking_token">Checking token...</string>
+    <string name="checking_token">Checking token…</string>
     <string name="this_token_is_invalid">This token is invalid</string>
 
 </resources>
