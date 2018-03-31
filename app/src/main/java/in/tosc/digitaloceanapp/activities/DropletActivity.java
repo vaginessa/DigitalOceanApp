@@ -72,13 +72,12 @@ public class DropletActivity extends AppCompatActivity
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         llayout_emptyViewHolder = findViewById(R.id.llayout_emptyViewHolder);
         dropletRecyclerView = (RecyclerView) findViewById(R.id.dropletsRv);
-        dropletRecyclerView.setLayoutManager(new LinearLayoutManager(DropletActivity.this, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                DropletActivity.this,
+                LinearLayoutManager.VERTICAL,
+                false);
+        dropletRecyclerView.setLayoutManager(layoutManager);
         droplets = new ArrayList<>();
-        Droplet dr = new Droplet();
-        dr.setName("test droplet");
-        dr.setRegion(new Region());
-        dr.setStatus(DropletStatus.ACTIVE);
-        droplets.add(dr);
         dropletsAdapter = new DropletsAdapter(droplets, DropletActivity.this) {
             @Override
             public void onEmptyDataset(List<Droplet> droplets) {
@@ -93,7 +92,7 @@ public class DropletActivity extends AppCompatActivity
 
         dropletRecyclerView.setAdapter(dropletsAdapter);
         doClient = DigitalOcean.getDOClient(getSharedPreferences("DO", MODE_PRIVATE).getString("authToken", null));
-        //refreshData();
+        refreshData();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -147,16 +146,15 @@ public class DropletActivity extends AppCompatActivity
             public void onResponse(Call<Droplets> call, Response<Droplets> response) {
                 droplets.clear();
                 List<Droplet> dropletsDownloaded = response.body().getDroplets();
-                for(Droplet droplet: dropletsDownloaded)
-                {
-                    if(droplet.isLocked())
-                    {
+                for(Droplet droplet: dropletsDownloaded) {
+                    if(droplet.isLocked()) {
                         dropletsDownloaded.remove(droplet);  //A locked droplet prevents any user actions
                     }
                 }
                 droplets.addAll(dropletsDownloaded);
                 dropletsAdapter.notifyDataSetChanged();
-                Log.e("Droplets fetched", String.valueOf(response.body().getDroplets().size()));
+                dropletsAdapter.updateUIOnEmpty();
+                Log.e("Droplets fetched", String.valueOf(dropletsDownloaded.size()));
             }
 
             @Override

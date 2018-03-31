@@ -27,21 +27,26 @@ public abstract class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapt
     private Context context;
     public static final String DROPLET_CLICKED_POSITION = "position";
 
-    public DropletsAdapter(List<Droplet> droplets, Context context) {
+    protected DropletsAdapter(List<Droplet> droplets, Context context) {
         dropletList = droplets;
         this.context = context;
     }
 
+    public void updateUIOnEmpty() {
+        if (dropletList.size() > 0) {
+            onFilledDataset(dropletList);
+        } else {
+            onEmptyDataset(dropletList);
+        }
+    }
+
     @Override
     public DropletsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        updateUIOnEmpty();
+        System.out.println("onCreateViewHolder called");
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_droplet,
                 parent,
                 false);
-        if (dropletList.size() == 0) {
-            onEmptyDataset(dropletList);
-        } else {
-            onFilledDataset(dropletList);
-        }
         return new ViewHolder(itemView);
     }
 
@@ -49,15 +54,13 @@ public abstract class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapt
 
     public abstract void onFilledDataset(List<Droplet> droplets);
 
-
     @Override
     public void onBindViewHolder(DropletsAdapter.ViewHolder holder, int position) {
-        Droplet droplet = dropletList.get(position);
-        /*if (droplet.getStatus().toString().equals("active")) {
 
-        }*/
+        System.out.println("onBindViewHolder called");
+        Droplet droplet = dropletList.get(position);
         holder.region.setText(droplet.getRegion().getName());
-//        holder.ipAddress.setText(droplet.getNetworks().getVersion4Networks().get(0).getIpAddress());
+        holder.ipAddress.setText(droplet.getNetworks().getVersion4Networks().get(0).getIpAddress());
         holder.dropletSize.setText(String.format(context.getResources().getString(R.string.droplet_disk_size), String.valueOf(droplet.getDiskSize())));
         holder.dropletRAM.setText(String.format(context.getResources().getString(R.string.droplet_memory), String.valueOf(droplet.getMemorySizeInMb())));
         holder.dropletName.setText(droplet.getName());
