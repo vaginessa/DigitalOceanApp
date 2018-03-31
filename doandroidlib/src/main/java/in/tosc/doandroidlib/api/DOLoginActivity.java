@@ -1,9 +1,11 @@
 package in.tosc.doandroidlib.api;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +21,7 @@ import in.tosc.doandroidlib.R;
 
 import static in.tosc.doandroidlib.DigitalOcean.EXTRA_AUTH_TOKEN;
 
-public class DOLoginActivity extends AppCompatActivity {
+public class DOLoginActivity extends Activity {
 
     public static final String TAG = DOLoginActivity.class.getSimpleName();
 
@@ -37,7 +39,6 @@ public class DOLoginActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_dologin);
-
 
         loginWebView = (WebView) findViewById(R.id.webView);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -75,10 +76,8 @@ public class DOLoginActivity extends AppCompatActivity {
                 progressBar.setProgress(progress);
                 if (progress == 100) {
                     progressBar.setVisibility(View.GONE);
-
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
-
                 }
             }
         });

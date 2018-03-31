@@ -37,10 +37,12 @@ import in.tosc.digitaloceanapp.utils.FontsOverride;
 
 import in.tosc.doandroidlib.DigitalOcean;
 import in.tosc.doandroidlib.api.DigitalOceanClient;
+import in.tosc.doandroidlib.common.DropletStatus;
 import in.tosc.doandroidlib.objects.Account;
 import in.tosc.doandroidlib.objects.AccountInfo;
 import in.tosc.doandroidlib.objects.Droplet;
 import in.tosc.doandroidlib.objects.Droplets;
+import in.tosc.doandroidlib.objects.Region;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,6 +59,7 @@ public class DropletActivity extends AppCompatActivity
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView dropletRecyclerView;
     static DigitalOceanClient doClient;
+    View llayout_emptyViewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +70,30 @@ public class DropletActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
+        llayout_emptyViewHolder = findViewById(R.id.llayout_emptyViewHolder);
         dropletRecyclerView = (RecyclerView) findViewById(R.id.dropletsRv);
         dropletRecyclerView.setLayoutManager(new LinearLayoutManager(DropletActivity.this, LinearLayoutManager.VERTICAL, false));
         droplets = new ArrayList<>();
-        dropletsAdapter = new DropletsAdapter(droplets, DropletActivity.this);
+        Droplet dr = new Droplet();
+        dr.setName("test droplet");
+        dr.setRegion(new Region());
+        dr.setStatus(DropletStatus.ACTIVE);
+        droplets.add(dr);
+        dropletsAdapter = new DropletsAdapter(droplets, DropletActivity.this) {
+            @Override
+            public void onEmptyDataset(List<Droplet> droplets) {
+                llayout_emptyViewHolder.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFilledDataset(List<Droplet> droplets) {
+                llayout_emptyViewHolder.setVisibility(View.GONE);
+            }
+        };
+
         dropletRecyclerView.setAdapter(dropletsAdapter);
         doClient = DigitalOcean.getDOClient(getSharedPreferences("DO", MODE_PRIVATE).getString("authToken", null));
-        refreshData();
+        //refreshData();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -176,9 +196,9 @@ public class DropletActivity extends AppCompatActivity
             byte messageDigest[] = digest.digest();
 
             // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest)
+                hexString.append(Integer.toHexString(0xFF & aMessageDigest));
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
@@ -216,7 +236,7 @@ public class DropletActivity extends AppCompatActivity
             i.setData(Uri.parse(url));
             startActivity(i);
         } else if (id == R.id.nav_logout) {
-            getSharedPreferences("DO", MODE_PRIVATE).edit().clear().commit();
+            getSharedPreferences("DO", MODE_PRIVATE).edit().clear().apply();
             Intent i=new Intent(this,SplashActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);

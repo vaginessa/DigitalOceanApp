@@ -21,9 +21,9 @@ import in.tosc.doandroidlib.objects.Droplet;
  * Created by the-dagger on 11/26/2016.
  */
 
-public class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapter.ViewHolder>{
+public abstract class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapter.ViewHolder> {
 
-    public List<Droplet> dropletList;
+    private List<Droplet> dropletList;
     private Context context;
     public static final String DROPLET_CLICKED_POSITION = "position";
 
@@ -34,18 +34,30 @@ public class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapter.ViewHo
 
     @Override
     public DropletsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_droplet, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_droplet,
+                parent,
+                false);
+        if (dropletList.size() == 0) {
+            onEmptyDataset(dropletList);
+        } else {
+            onFilledDataset(dropletList);
+        }
         return new ViewHolder(itemView);
     }
+
+    public abstract void onEmptyDataset(List<Droplet> droplets);
+
+    public abstract void onFilledDataset(List<Droplet> droplets);
+
 
     @Override
     public void onBindViewHolder(DropletsAdapter.ViewHolder holder, int position) {
         Droplet droplet = dropletList.get(position);
-        if (droplet.getStatus().toString().equals("active")) {
+        /*if (droplet.getStatus().toString().equals("active")) {
 
-        }
+        }*/
         holder.region.setText(droplet.getRegion().getName());
-        holder.ipAddress.setText(droplet.getNetworks().getVersion4Networks().get(0).getIpAddress());
+//        holder.ipAddress.setText(droplet.getNetworks().getVersion4Networks().get(0).getIpAddress());
         holder.dropletSize.setText(String.format(context.getResources().getString(R.string.droplet_disk_size), String.valueOf(droplet.getDiskSize())));
         holder.dropletRAM.setText(String.format(context.getResources().getString(R.string.droplet_memory), String.valueOf(droplet.getMemorySizeInMb())));
         holder.dropletName.setText(droplet.getName());
@@ -53,9 +65,7 @@ public class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        if (dropletList == null)
-            return 0;
-        return dropletList.size();
+        return (dropletList != null) ? dropletList.size() : 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,6 +86,7 @@ public class DropletsAdapter extends RecyclerView.Adapter<DropletsAdapter.ViewHo
             ipAddress = (TextView) itemView.findViewById(R.id.ipAddress);
             region = (TextView) itemView.findViewById(R.id.dropletRegion);
         }
+
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, DetailDropletActivity.class);

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.digitaloceanapp.R;
@@ -33,12 +34,10 @@ public class SelectImageFragment extends Fragment {
 
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,14 +46,16 @@ public class SelectImageFragment extends Fragment {
         DigitalOceanClient doClient = DigitalOcean.getDOClient(getContext().getSharedPreferences("DO", MODE_PRIVATE).getString("authToken", null));
         imageRecyclerView = (RecyclerView) view.findViewById(R.id.imageRecyclerVIew);
         imageRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        imageList = new ArrayList<Image>();
+        imageAdapter = new ImageAdapter(imageList, inflater.getContext());
         imageRecyclerView.setAdapter(imageAdapter);
 
         doClient.getImages(1, 100, "distribution").enqueue(new Callback<Images>() {
             @Override
             public void onResponse(Call<Images> call, Response<Images> response) {
-                imageList = response.body().getImages();
-                imageAdapter = new ImageAdapter(imageList, getContext());
-                imageRecyclerView.setAdapter(imageAdapter);
+                imageList.addAll(response.body().getImages());
+                imageAdapter.notifyDataSetChanged();
                 Log.e("Droplets fetched", String.valueOf(imageList.size()));
             }
 

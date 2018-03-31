@@ -1,22 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRefresh"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<android.support.v4.widget.NestedScrollView
-    android:layout_margin="8dp"
-    android:layout_height="wrap_content"
+    android:background="#eee"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/dropletsRv"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dropletsRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/llayout_emptyViewHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dropletsRv"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tview_empty_view_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="24sp"
+                android:layout_gravity="center"
+                android:textColor="@android:color/holo_red_dark"
+                android:textStyle="bold"
+                android:text="No Droplets" />
 
 
-</android.support.v4.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/tview_empty_view_descr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:text="Create a New Droplet using the (+) icon." />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

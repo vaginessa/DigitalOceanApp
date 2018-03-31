@@ -26,9 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
-
-                >
+                android:padding="12dp">
 
                 <TextView
                     android:id="@+id/droplet_name"
@@ -135,6 +133,13 @@
 
         </android.support.v7.widget.CardView>
 
+
+        <TextView
+            android:text="@string/create_snapshot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -176,6 +181,12 @@
                     android:theme="@style/snapshot" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_margin="8dp"
+            android:text="@string/advanced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
