@@ -24,6 +24,7 @@
         <activity
             android:name=".activities.DropletCreateActivity"
             android:label="@string/title_activity_droplet_create"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".activities.DropletActivity"
             android:theme="@style/AppTheme">
             <meta-data

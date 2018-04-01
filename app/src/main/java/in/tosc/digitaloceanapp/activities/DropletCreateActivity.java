@@ -1,50 +1,123 @@
 package in.tosc.digitaloceanapp.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 import in.tosc.digitaloceanapp.R;
-import in.tosc.digitaloceanapp.fragments.AdditionalDetailsFragment;
-import in.tosc.digitaloceanapp.fragments.DataCenterFragment;
-import in.tosc.digitaloceanapp.fragments.SelectImageFragment;
-import in.tosc.digitaloceanapp.fragments.SelectSizeFragment;
-import in.tosc.doandroidlib.objects.Droplet;
+import in.tosc.digitaloceanapp.adapters.DataCenterAdapter;
+import in.tosc.digitaloceanapp.adapters.SelectDistributionAdapter;
+import in.tosc.digitaloceanapp.adapters.SelectImageSizeAdapter;
+import in.tosc.digitaloceanapp.adapters.SelectRegionAdapter;
+import in.tosc.digitaloceanapp.adapters.SelectSizeAdapter;
+import in.tosc.digitaloceanapp.utils.Utils;
+import in.tosc.doandroidlib.DigitalOcean;
+import in.tosc.doandroidlib.api.DigitalOceanClient;
+import in.tosc.doandroidlib.objects.Image;
+import in.tosc.doandroidlib.objects.Images;
+import in.tosc.doandroidlib.objects.Region;
+import in.tosc.doandroidlib.objects.Regions;
+import in.tosc.doandroidlib.objects.Size;
+import in.tosc.doandroidlib.objects.Sizes;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class DropletCreateActivity extends AppCompatActivity {
+    private ArrayList<Image> distributionList;
+    private ArrayList<Region> regionsList;
+    private ArrayList<Size> sizeList;
 
-   /* static Droplet droplet;
-    int count = 1;
-    Button btnNext;
-    Button btnPrev;
-    Button btnCreateDropet;
-    private static final String TAG = "DropletCreateActivity";*/
-
-/*
-    public static Droplet getDroplet() {
-        return droplet;
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_droplet_create);
 
+        final Spinner spinner_distribution, spinner_region, spinner_size;
+        spinner_distribution = (Spinner) findViewById(R.id.spinner_distribution);
+        spinner_region = (Spinner) findViewById(R.id.spinner_region);
+        spinner_size = (Spinner) findViewById(R.id.spinner_size);
 
-        /*droplet = new Droplet();
-        btnNext = (Button) findViewById(R.id.buttonNext);
-        btnPrev = (Button) findViewById(R.id.buttonPrev);
-        btnCreateDropet = (Button) findViewById(R.id.btnCreateDroplet);*/
+        distributionList = new ArrayList<>();
+        regionsList = new ArrayList<>();
+        sizeList = new ArrayList<>();
+
+        final SelectDistributionAdapter distributionAdapter = new SelectDistributionAdapter(
+                this,
+                distributionList
+        );
+        spinner_distribution.setAdapter(distributionAdapter);
+
+        final SelectRegionAdapter regionAdapter = new SelectRegionAdapter(this, regionsList);
+        spinner_region.setAdapter(regionAdapter);
+
+        final SelectImageSizeAdapter sizeAdapter = new SelectImageSizeAdapter(this, sizeList);
+        spinner_size.setAdapter(sizeAdapter);
+
+        String authToken = Utils.getAuthToken(this);
+        DigitalOceanClient doClient = DigitalOcean.getDOClient(authToken);
+
+        doClient.getImages(1, 100, "distribution").enqueue(new Callback<Images>() {
+            @Override
+            public void onResponse(Call<Images> call, Response<Images> response) {
+                distributionList.addAll(response.body().getImages());
+                distributionAdapter.notifyDataSetChanged();
+                Log.i("Droplets fetched", String.valueOf(distributionList.size()));
+            }
+
+            @Override
+            public void onFailure(Call<Images> call, Throwable t) {
+                Log.e("Failed getting images", t.getLocalizedMessage());
+            }
+        });
+
+        doClient.getRegions().enqueue(new Callback<Regions>() {
+            @Override
+            public void onResponse(Call<Regions> call, Response<Regions> response) {
+                regionsList.addAll(response.body().getRegions());
+                regionAdapter.notifyDataSetChanged();
+                Log.i("Regions fetched", "onResponse: " + regionsList.size());
+            }
+
+            @Override
+            public void onFailure(Call<Regions> call, Throwable t) {
+                Log.e("Regions fetched", "onFailure: Unable to oad Regions ", t);
+            }
+        });
+
+        doClient.getSizes().enqueue(new Callback<Sizes>() {
+            @Override
+            public void onResponse(Call<Sizes> call, Response<Sizes> response) {
+                sizeList.addAll(response.body().getSizes());
+                sizeAdapter.notifyDataSetChanged();
+                Log.e("Sizes fetched", String.valueOf(sizeList.size()));
+            }
+
+            @Override
+            public void onFailure(Call<Sizes> call, Throwable t) {
+                Log.e("Failed getting sizes", t.getLocalizedMessage());
+            }
+        });
+
     }
-/*
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_create_droplet,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /*
     private void removeFragment(int count) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

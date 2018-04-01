@@ -128,5 +128,6 @@
     <string name="your_dashboard">Your Dashboard</string>
     <string name="additional_options">Additional Options</string>
     <string name="emptyViewPlaceholder">You new droplet is just at a tap away. Click on (+) to get started.</string>
+    <string name="submit">Submit</string>
 
 </resources>
