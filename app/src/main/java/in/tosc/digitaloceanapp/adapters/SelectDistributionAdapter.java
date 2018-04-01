@@ -55,8 +55,12 @@ public class SelectDistributionAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        String text = String.format("%s %s", dataset.get(i).getDistribution(), dataset.get(i).getName());
-        holder.textView.setText(text);
+        if (dataset.get(i).getDistribution().equals(context.getString(R.string.data_unavailable))) {
+            holder.textView.setText(context.getString(R.string.data_unavailable));
+        } else {
+            String text = String.format("%s %s", dataset.get(i).getDistribution(), dataset.get(i).getName());
+            holder.textView.setText(text);
+        }
         return view;
     }
 

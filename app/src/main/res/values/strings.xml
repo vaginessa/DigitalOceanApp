@@ -115,9 +115,9 @@
     <string name="this_token_is_invalid">This token is invalid</string>
     <string name="create_snapshot">Create Snapshot</string>
     <string name="advanced">Advanced</string>
-    <string name="choose_a_distribution">Linux Distribution:</string>
-    <string name="distribution_size">Distribution Size:</string>
-    <string name="datacenter_region">DataCenter Region:</string>
+    <string name="choose_a_distribution">Linux Distribution</string>
+    <string name="distribution_size">Distribution Size</string>
+    <string name="datacenter_region">DataCenter Region</string>
     <string name="droplet_info">Droplet Info:</string>
     <string name="enable_ipv6_support">IPv6 support</string>
     <string name="private_networking">Private Networking</string>
@@ -129,5 +129,6 @@
     <string name="additional_options">Additional Options</string>
     <string name="emptyViewPlaceholder">You new droplet is just at a tap away. Click on (+) to get started.</string>
     <string name="submit">Submit</string>
+    <string name="data_unavailable">Data unavailable</string>
 
 </resources>

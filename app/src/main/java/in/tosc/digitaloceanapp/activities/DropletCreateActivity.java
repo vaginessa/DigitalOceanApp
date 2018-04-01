@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import in.tosc.digitaloceanapp.R;
@@ -43,6 +45,7 @@ public class DropletCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_droplet_create);
 
+        EditText edt_dropletName = (EditText) findViewById(R.id.edt_droplet_name);
         final Spinner spinner_distribution, spinner_region, spinner_size;
         spinner_distribution = (Spinner) findViewById(R.id.spinner_distribution);
         spinner_region = (Spinner) findViewById(R.id.spinner_region);
@@ -77,6 +80,10 @@ public class DropletCreateActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Images> call, Throwable t) {
+                Image errImage = new Image();
+                errImage.setDistribution(getResources().getString(R.string.data_unavailable));
+                distributionList.add(errImage);
+                distributionAdapter.notifyDataSetChanged();
                 Log.e("Failed getting images", t.getLocalizedMessage());
             }
         });
@@ -91,7 +98,11 @@ public class DropletCreateActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Regions> call, Throwable t) {
-                Log.e("Regions fetched", "onFailure: Unable to oad Regions ", t);
+                Region errRegion = new Region();
+                errRegion.setName(getResources().getString(R.string.data_unavailable));
+                regionsList.add(errRegion);
+                regionAdapter.notifyDataSetChanged();
+                Log.e("failed getting Regions", "onFailure: Unable to oad Regions ", t);
             }
         });
 
@@ -100,11 +111,16 @@ public class DropletCreateActivity extends AppCompatActivity {
             public void onResponse(Call<Sizes> call, Response<Sizes> response) {
                 sizeList.addAll(response.body().getSizes());
                 sizeAdapter.notifyDataSetChanged();
-                Log.e("Sizes fetched", String.valueOf(sizeList.size()));
+                Log.e("failed getting Sizes", String.valueOf(sizeList.size()));
             }
 
             @Override
             public void onFailure(Call<Sizes> call, Throwable t) {
+                Size errSize = new Size();
+                errSize.setDiskSize(0);
+                errSize.setPriceHourly(BigDecimal.ZERO);
+                sizeList.add(errSize);
+                sizeAdapter.notifyDataSetChanged();
                 Log.e("Failed getting sizes", t.getLocalizedMessage());
             }
         });

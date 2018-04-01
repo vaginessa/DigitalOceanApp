@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -56,11 +57,19 @@ public class SelectImageSizeAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         Size itemSize = dataset.get(i);
-        holder.diskspace.setText(String.format(Locale.getDefault(),"%dGB Disk Space",itemSize.getDiskSize()));
-        holder.memory.setText(String.format(Locale.getDefault(),"%dMB RAM",itemSize.getMemorySizeInMb()));
-        holder.transfer.setText(String.format(Locale.getDefault(),"%dGB transfer",itemSize.getTransfer().intValue()));
-        holder.price.setText(String.format(Locale.getDefault(),
-                "$%d per month",itemSize.getPriceMonthly().intValue()));
+        if(itemSize.getDiskSize() !=0 && itemSize.getPriceHourly() != BigDecimal.ZERO) {
+            holder.diskspace.setText(String.format(Locale.getDefault(), "%dGB Disk Space", itemSize.getDiskSize()));
+            holder.memory.setText(String.format(Locale.getDefault(), "%dMB RAM", itemSize.getMemorySizeInMb()));
+            holder.transfer.setText(String.format(Locale.getDefault(), "%dGB transfer", itemSize.getTransfer().intValue()));
+            holder.price.setText(String.format(Locale.getDefault(),
+                    "$%d per month", itemSize.getPriceMonthly().intValue()));
+        } else {
+            // unable to fetch data. show err msg
+            holder.diskspace.setText(R.string.data_unavailable);
+            holder.price.setVisibility(View.GONE);
+            holder.memory.setVisibility(View.GONE);
+            holder.transfer.setVisibility(View.GONE);
+        }
         return view;
     }
 
