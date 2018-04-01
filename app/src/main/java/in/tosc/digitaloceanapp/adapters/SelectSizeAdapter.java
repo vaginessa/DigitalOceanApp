@@ -40,8 +40,18 @@ public class SelectSizeAdapter extends RecyclerView.Adapter<SelectSizeAdapter.Vi
 
     @Override
     public void onBindViewHolder(final SelectSizeAdapter.ViewHolder holder, final int position) {
+    }
 
-        holder.monthlyPrice.setText(String.format(context.getString(R.string.monthly_price), sizeList.get(position).getPriceMonthly().toString()));
+    @Override
+    public int getItemCount() {
+        return 0;
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+        /*holder.monthlyPrice.setText(String.format(context.getString(R.string.monthly_price), sizeList.get(position).getPriceMonthly().toString()));
         holder.hourlyPrice.setText(String.format(context.getString(R.string.hourly_price), sizeList.get(position).getPriceHourly().toString()));
         holder.memory.setText(String.format(context.getString(R.string.memory), sizeList.get(position).getMemorySizeInMb().toString(), sizeList.get(position).getVirutalCpuCount().toString()));
         holder.diskSpace.setText(String.format(context.getString(R.string.disk_space), sizeList.get(position).getDiskSize().toString()));
@@ -86,17 +96,8 @@ public class SelectSizeAdapter extends RecyclerView.Adapter<SelectSizeAdapter.Vi
     private void deselectSize(ViewHolder holder, int position) {
         holder.sizeCV.setBackgroundColor(Color.WHITE);
         holder.sizeCV.setTag(false);
-    }
+    }*/
 
-    @Override
-    public int getItemCount() {
-        return sizeList.size();
-    }
-
-    @Override
-    public void onClick(View v) {
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

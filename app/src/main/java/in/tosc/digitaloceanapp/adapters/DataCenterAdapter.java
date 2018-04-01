@@ -46,7 +46,7 @@ public class DataCenterAdapter extends RecyclerView.Adapter<DataCenterAdapter.Da
 
     @Override
     public void onBindViewHolder(final DataCenterViewHolder holder, final int position) {
-        this.postion = holder.getAdapterPosition();
+      /*  this.postion = holder.getAdapterPosition();
         String thisRegion = regions.getRegions().get(position).getName();
         holder.countryName.setText(thisRegion);
         if (thisRegion.contains("New York")) {
@@ -96,7 +96,7 @@ public class DataCenterAdapter extends RecyclerView.Adapter<DataCenterAdapter.Da
             }
         });
 
-
+*/
     }
 
     private void selectRegion(int position, DataCenterViewHolder holder) {

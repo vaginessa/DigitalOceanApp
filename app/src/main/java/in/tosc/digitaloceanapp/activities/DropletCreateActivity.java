@@ -21,28 +21,30 @@ import in.tosc.doandroidlib.objects.Droplet;
  */
 public class DropletCreateActivity extends AppCompatActivity {
 
-    static Droplet droplet;
+   /* static Droplet droplet;
     int count = 1;
     Button btnNext;
     Button btnPrev;
     Button btnCreateDropet;
-    private static final String TAG = "DropletCreateActivity";
+    private static final String TAG = "DropletCreateActivity";*/
 
-
+/*
     public static Droplet getDroplet() {
         return droplet;
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        droplet = new Droplet();
         setContentView(R.layout.activity_droplet_create);
+
+
+        /*droplet = new Droplet();
         btnNext = (Button) findViewById(R.id.buttonNext);
         btnPrev = (Button) findViewById(R.id.buttonPrev);
-        btnCreateDropet = (Button) findViewById(R.id.btnCreateDroplet);
+        btnCreateDropet = (Button) findViewById(R.id.btnCreateDroplet);*/
     }
-
+/*
     private void removeFragment(int count) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -139,6 +141,5 @@ public class DropletCreateActivity extends AppCompatActivity {
         {
             Toast.makeText(this, R.string.please_choose_option, Toast.LENGTH_SHORT).show();
         }
-    }
-
+    }*/
 }

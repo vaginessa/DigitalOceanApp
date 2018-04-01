@@ -52,7 +52,7 @@ public class AdditionalDetailsFragment extends Fragment {
         cbIpv6 = (CheckBox) view.findViewById(R.id.ipv6CheckBox);
         etDropletName = (EditText) view.findViewById(R.id.etDropletName);
         btnCreateDroplet = (Button) view.findViewById(R.id.btnCreateDroplet);
-        setAdditionalOptions();
+    //    setAdditionalOptions();
         btnCreateDroplet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +65,7 @@ public class AdditionalDetailsFragment extends Fragment {
                     builder.setIcon(R.drawable.digital_ocean_logo);
                     final AlertDialog dialog = builder.create();
                     dialog.show();
-                    Droplet newDroplet = DropletCreateActivity.getDroplet();
+                    /*Droplet newDroplet = DropletCreateActivity.getDroplet();
                     newDroplet.setName(dropletName);
                     DigitalOceanClient doaClient = DigitalOcean.getDOClient(getContext().getSharedPreferences("DO", MODE_PRIVATE).getString("authToken", null));
 
@@ -92,14 +92,14 @@ public class AdditionalDetailsFragment extends Fragment {
                         public void onFailure(Call<Droplet> call, Throwable t) {
                             Log.d(TAG, "onFailure: " + t.getMessage());
                         }
-                    });
+                    });*/
                 }
             }
         });
         return view;
     }
 
-
+/*
     public void setAdditionalOptions() {
         cbPrivateNetworking.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -134,6 +134,6 @@ public class AdditionalDetailsFragment extends Fragment {
                 }
             }
         });
-    }
+    }*/
 
 }

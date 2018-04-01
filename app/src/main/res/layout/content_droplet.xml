@@ -16,39 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:id="@+id/llayout_emptyViewHolder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dropletsRv"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="18dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tview_empty_view_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="24sp"
-                android:layout_gravity="center"
-                android:textColor="@android:color/holo_red_dark"
-                android:textStyle="bold"
-                android:text="No Droplets" />
-
-
             <TextView
                 android:id="@+id/tview_empty_view_descr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:textSize="20sp"
+                android:layout_margin="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:text="Create a New Droplet using the (+) icon." />
-
-
-        </LinearLayout>
-
+                android:text="@string/emptyViewPlaceholder" />
 
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

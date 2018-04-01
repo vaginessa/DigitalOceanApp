@@ -59,7 +59,7 @@ public class DropletActivity extends AppCompatActivity
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView dropletRecyclerView;
     static DigitalOceanClient doClient;
-    View llayout_emptyViewHolder;
+    View emptyViewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +68,10 @@ public class DropletActivity extends AppCompatActivity
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
         setContentView(R.layout.activity_droplet);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.dashboard);
         setSupportActionBar(toolbar);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        llayout_emptyViewHolder = findViewById(R.id.llayout_emptyViewHolder);
+        emptyViewHolder = findViewById(R.id.tview_empty_view_descr);
         dropletRecyclerView = (RecyclerView) findViewById(R.id.dropletsRv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 DropletActivity.this,
@@ -81,12 +82,12 @@ public class DropletActivity extends AppCompatActivity
         dropletsAdapter = new DropletsAdapter(droplets, DropletActivity.this) {
             @Override
             public void onEmptyDataset(List<Droplet> droplets) {
-                llayout_emptyViewHolder.setVisibility(View.VISIBLE);
+                emptyViewHolder.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFilledDataset(List<Droplet> droplets) {
-                llayout_emptyViewHolder.setVisibility(View.GONE);
+                emptyViewHolder.setVisibility(View.GONE);
             }
         };
 
