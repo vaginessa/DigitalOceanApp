@@ -1,21 +1,16 @@
 package in.tosc.digitaloceanapp.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,26 +18,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
 import in.tosc.digitaloceanapp.R;
 import in.tosc.digitaloceanapp.adapters.DropletsAdapter;
-import in.tosc.digitaloceanapp.interfaces.OnDropletNameChange;
+import in.tosc.digitaloceanapp.fragments.DashboardFragment;
 import in.tosc.digitaloceanapp.utils.FontsOverride;
-
-
-
+import in.tosc.digitaloceanapp.utils.Utils;
 import in.tosc.doandroidlib.DigitalOcean;
 import in.tosc.doandroidlib.api.DigitalOceanClient;
-import in.tosc.doandroidlib.common.DropletStatus;
-import in.tosc.doandroidlib.objects.Account;
 import in.tosc.doandroidlib.objects.AccountInfo;
-import in.tosc.doandroidlib.objects.Droplet;
-import in.tosc.doandroidlib.objects.Droplets;
-import in.tosc.doandroidlib.objects.Region;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,12 +37,9 @@ import retrofit2.Response;
 public class DropletActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static List<Droplet> droplets;
-    static DropletsAdapter dropletsAdapter;
-    SwipeRefreshLayout swipeRefreshLayout;
-    RecyclerView dropletRecyclerView;
-    static DigitalOceanClient doClient;
-    View emptyViewHolder;
+
+    private static DigitalOceanClient doClient;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,67 +47,38 @@ public class DropletActivity extends AppCompatActivity
 
         FontsOverride.applyFontForToolbarTitle(this, FontsOverride.FONT_PROXIMA_NOVA);
         setContentView(R.layout.activity_droplet);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.dashboard);
-        setSupportActionBar(toolbar);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        emptyViewHolder = findViewById(R.id.tview_empty_view_descr);
-        dropletRecyclerView = (RecyclerView) findViewById(R.id.dropletsRv);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                DropletActivity.this,
-                LinearLayoutManager.VERTICAL,
-                false);
-        dropletRecyclerView.setLayoutManager(layoutManager);
-        droplets = new ArrayList<>();
-        dropletsAdapter = new DropletsAdapter(droplets, DropletActivity.this) {
-            @Override
-            public void onEmptyDataset(List<Droplet> droplets) {
-                emptyViewHolder.setVisibility(View.VISIBLE);
-            }
 
-            @Override
-            public void onFilledDataset(List<Droplet> droplets) {
-                emptyViewHolder.setVisibility(View.GONE);
-            }
-        };
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        dropletRecyclerView.setAdapter(dropletsAdapter);
-        doClient = DigitalOcean.getDOClient(getSharedPreferences("DO", MODE_PRIVATE).getString("authToken", null));
-        refreshData();
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshData();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DropletActivity.this, DropletCreateActivity.class);
-                startActivity(intent);
-            }
-        });
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.dispatchSetSelected(true);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this,
+                drawer,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        doClient = DigitalOcean.getDOClient(Utils.getAuthToken(this));
         doClient.getAccount().enqueue(new Callback<AccountInfo>() {
             @Override
             public void onResponse(Call<AccountInfo> call, Response<AccountInfo> response) {
                 String email = response.body().getAccount().getEmail();
-                if (((TextView) drawer.findViewById(R.id.accountEmail)) != null) {
-                    ((TextView) drawer.findViewById(R.id.accountEmail)).setText(email);
-                }
-                ImageView profilePic = ((ImageView) drawer.findViewById(R.id.accountPic));
-                if (profilePic != null && email != null && !email.isEmpty()) {
-                    Picasso.with(DropletActivity.this).load("https://www.gravatar.com/avatar/" + md5(email)).into(profilePic);
-                }
 
+                ImageView profilePic = ((ImageView) drawer.findViewById(R.id.accountPic));
+                TextView emailView = (TextView) drawer.findViewById(R.id.accountEmail);
+
+                if (emailView != null) {
+                    emailView.setText(email);
+                }
+                if (profilePic != null && email != null && !email.isEmpty()) {
+                    Picasso.with(DropletActivity.this)
+                            .load("https://www.gravatar.com/avatar/")
+                            .into(profilePic);
+                }
             }
 
             @Override
@@ -137,24 +88,27 @@ public class DropletActivity extends AppCompatActivity
         });
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Select Dashboard menu by default!
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
 
-    public static void refreshData() {
+    public static void refreshData(final DropletsAdapter adapter) {
 
-        doClient.getDroplets(1, 10).enqueue(new Callback<Droplets>() {
+/*        doClient.getDroplets(1, 10).enqueue(new Callback<Droplets>() {
             @Override
             public void onResponse(Call<Droplets> call, Response<Droplets> response) {
                 droplets.clear();
                 List<Droplet> dropletsDownloaded = response.body().getDroplets();
-                for(Droplet droplet: dropletsDownloaded) {
-                    if(droplet.isLocked()) {
+                for (Droplet droplet : dropletsDownloaded) {
+                    if (droplet.isLocked()) {
                         dropletsDownloaded.remove(droplet);  //A locked droplet prevents any user actions
                     }
                 }
                 droplets.addAll(dropletsDownloaded);
-                dropletsAdapter.notifyDataSetChanged();
-                dropletsAdapter.updateUIOnEmpty();
+                adapter.notifyDataSetChanged();
+                adapter.updateUIOnEmpty();
                 Log.e("Droplets fetched", String.valueOf(dropletsDownloaded.size()));
             }
 
@@ -163,9 +117,9 @@ public class DropletActivity extends AppCompatActivity
                 droplets = null;
                 Log.e("Failed to get Droplets", t.getMessage());
             }
-        });
+        });*/
     }
-
+/*
     public static void refreshModifiedData(final OnDropletNameChange onDropletNameChange) {
 
         doClient.getDroplets(1, 10).enqueue(new Callback<Droplets>() {
@@ -173,7 +127,7 @@ public class DropletActivity extends AppCompatActivity
             public void onResponse(Call<Droplets> call, Response<Droplets> response) {
                 droplets.clear();
                 droplets.addAll(response.body().getDroplets());
-                dropletsAdapter.notifyDataSetChanged();
+                //dropletAdapter.notifyDataSetChanged();
                 Log.e("Droplets fetched", String.valueOf(response.body().getDroplets().size()));
                 onDropletNameChange.onSuccess(droplets);
             }
@@ -186,7 +140,24 @@ public class DropletActivity extends AppCompatActivity
             }
         });
     }
+*/
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //refreshData(dropletsAdapter);
+    }
+
+    public void pushFragment(android.support.v4.app.Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction
+                .replace(R.id.frameHolder, fragment);//R.id.content_frame is the layout you want to replace
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    /*
     public String md5(String s) {
         try {
             // Create MD5 Hash
@@ -205,6 +176,7 @@ public class DropletActivity extends AppCompatActivity
         }
         return "";
     }
+*/
 
     @Override
     public void onBackPressed() {
@@ -216,41 +188,28 @@ public class DropletActivity extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        String url;
-        if (id == R.id.nav_profile) {
-            url = "https://cloud.digitalocean.com/settings/profile";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-            // Handle the camera action
-        } else if (id == R.id.nav_billing) {
-            url = "https://cloud.digitalocean.com/settings/billing";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        } else if (id == R.id.nav_logout) {
-            getSharedPreferences("DO", MODE_PRIVATE).edit().clear().apply();
-            Intent i=new Intent(this,SplashActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-            finish();
-
-
+        if (id == R.id.nav_dashboard) {
+            toolbar.setTitle(R.string.dashboard);
+            DashboardFragment dashboardFragment = new DashboardFragment();
+            pushFragment(dashboardFragment);
+        } else if (id == R.id.nav_domains) {
+            toolbar.setTitle(R.string.domains);
+        } else if (id == R.id.nav_certificates) {
+            toolbar.setTitle(R.string.certificates);
         } else if (id == R.id.nav_manage) {
-            url = "https://cloud.digitalocean.com/settings";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         } else if (id == R.id.nav_share) {
-
+            Intent shareIntent = new Intent();
+//            shareIntent.setDataAndType(Uri.parse("http://google.com/"),"");
+            startActivity(Intent.createChooser(shareIntent, "Share app"));
         } else if (id == R.id.nav_about) {
-            Intent i = new Intent(this,AboutActivity.class);
+            Intent i = new Intent(this, AboutActivity.class);
             startActivity(i);
         }
 
@@ -259,9 +218,10 @@ public class DropletActivity extends AppCompatActivity
         return true;
     }
 
-    private void openCustomTab(String url) {
+/*    private void openCustomTab(String url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         CustomTabsIntent customTabsIntent = builder.build();
         customTabsIntent.launchUrl(this, Uri.parse(url));
     }
+*/
 }

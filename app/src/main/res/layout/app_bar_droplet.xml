@@ -17,8 +17,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
             android:weightSum="1"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -32,13 +30,4 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/appbarlayout_app_bar_droplet" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="22dp"
-        android:src="@drawable/ic_add_white_24dp" />
 </RelativeLayout>

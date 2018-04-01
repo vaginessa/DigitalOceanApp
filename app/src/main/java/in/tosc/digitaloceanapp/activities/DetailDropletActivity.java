@@ -118,7 +118,7 @@ public class DetailDropletActivity extends AppCompatActivity implements Compound
                         @Override
                         public void onResponse(Call<Action> call, Response<Action> response) {
                             Log.d("DESTROY",String.valueOf(response.code()));
-                            DropletActivity.refreshData();
+                            //DropletActivity.refreshData();
                             finish();
                         }
 
@@ -202,7 +202,6 @@ public class DetailDropletActivity extends AppCompatActivity implements Compound
                                             Log.e(TAG, "onError: " + message);
                                         }
                                     };
-                                    DropletActivity.refreshModifiedData(onDropletNameChange);
                                     Log.d("TAG", "onResponse: changed");
                                 }
 
@@ -228,7 +227,7 @@ public class DetailDropletActivity extends AppCompatActivity implements Compound
                         public void onResponse(Call<Action> call, Response<Action> response) {
                             if (response.code() >= 200 && response.code()<=299) {
                                 Snackbar.make(coordinatorLayout, getString(R.string.ipv6_enabled), Snackbar.LENGTH_SHORT).show();
-                                DropletActivity.refreshData();
+                                //DropletActivity.refreshData();
                             } else {
                                 Log.d("IPv6", response.code() + "");
                                 setSwitchWithoutTriggering(switchIPv6,false);
@@ -256,7 +255,7 @@ public class DetailDropletActivity extends AppCompatActivity implements Compound
                         public void onResponse(Call<Action> call, Response<Action> response) {
                             if (response.code() >= 200 && response.code()<=299) {
                                 Snackbar.make(coordinatorLayout, getString(R.string.private_network_enabled), Snackbar.LENGTH_SHORT).show();
-                                DropletActivity.refreshData();
+                                //DropletActivity.refreshData();
                             } else {
                                 Log.d("SPN", response.code() + "");
                                 setSwitchWithoutTriggering(switchPrivateNet,false);
@@ -283,7 +282,7 @@ public class DetailDropletActivity extends AppCompatActivity implements Compound
                         public void onResponse(Call<Action> call, Response<Action> response) {
                             if (response.code() >= 200 && response.code()<=299) {
                                 Snackbar.make(coordinatorLayout, getString(R.string.backup_enabled), Snackbar.LENGTH_SHORT).show();
-                                DropletActivity.refreshData();
+                                //DropletActivity.refreshData();
                             } else {
                                 setSwitchWithoutTriggering(switchBackup,false);
                                 Snackbar.make(coordinatorLayout, getString(R.string.backup_couldnt_be_enabled), Snackbar.LENGTH_SHORT).show();
@@ -303,7 +302,7 @@ public class DetailDropletActivity extends AppCompatActivity implements Compound
                         public void onResponse(Call<Action> call, Response<Action> response) {
                             if (response.code() >= 200 && response.code()<=299) {
                                 Snackbar.make(coordinatorLayout, getString(R.string.backup_disabled), Snackbar.LENGTH_SHORT).show();
-                                DropletActivity.refreshData();
+                                //DropletActivity.refreshData();
                             } else {
                                 Log.d("SBD", response.code() + "");
                                 setSwitchWithoutTriggering(switchBackup,true);
