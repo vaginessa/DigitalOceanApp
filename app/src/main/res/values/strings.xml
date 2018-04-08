@@ -114,9 +114,8 @@
     <string name="create_snapshot">Create Snapshot</string>
     <string name="advanced">Advanced</string>
     <string name="choose_a_distribution">Linux Distribution</string>
-    <string name="distribution_size">Distribution Size</string>
     <string name="datacenter_region">DataCenter Region</string>
-    <string name="droplet_info">Droplet Info</string>
+    <string name="droplet_details">Droplet Details</string>
     <string name="enable_ipv6_support">IPv6 support</string>
     <string name="private_networking">Private Networking</string>
     <string name="backups">Backups</string>
@@ -127,7 +126,7 @@
     <string name="certificates">Certificates</string>
     <string name="settings">Settings</string>
     <string name="additional_options">Additional Options</string>
-    <string name="emptyViewPlaceholder">You new droplet is just at a tap away. Click on (+) to get started.</string>
+    <string name="emptyViewPlaceholder">Click on (+) to get started.</string>
     <string name="submit">Submit</string>
     <string name="data_unavailable">Data unavailable</string>
     <string name="title_activity_settings">Settings</string>
@@ -206,5 +205,6 @@
     <string name="more">More</string>
     <string name="share">Share</string>
     <string name="about">About</string>
+    <string name="drop_price">Droplet Price</string>
 
 </resources>
