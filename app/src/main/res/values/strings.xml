@@ -116,9 +116,6 @@
     <string name="choose_a_distribution">Linux Distribution</string>
     <string name="datacenter_region">DataCenter Region</string>
     <string name="droplet_details">Droplet Details</string>
-    <string name="enable_ipv6_support">IPv6 support</string>
-    <string name="private_networking">Private Networking</string>
-    <string name="backups">Backups</string>
     <string name="give_a_name">Give a name</string>
     <string name="home">Home</string>
     <string name="dashboard">Dashboard</string>
@@ -206,5 +203,7 @@
     <string name="share">Share</string>
     <string name="about">About</string>
     <string name="drop_price">Droplet Price</string>
+    <string name="droplet_size">Droplet Size</string>
+    <string name="ipv6">IPv6</string>
 
 </resources>

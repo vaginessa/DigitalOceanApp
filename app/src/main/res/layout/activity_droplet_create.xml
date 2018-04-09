@@ -1,11 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/bg_gray"
     android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingStart="8dp"
     tools:context="in.tosc.digitaloceanapp.activities.DropletCreateActivity">
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,123 +17,157 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                app:cardCornerRadius="16dp">
 
-                <LinearLayout
-                    android:id="@+id/llayout_chooseDropletNameLayout"
+                <EditText
+                    android:id="@+id/edt_droplet_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="8dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/droplet_name"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textSize="18sp" />
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/choose_a_distribution"
+                android:textSize="15sp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="16dp">
+
+                <Spinner
+                    android:id="@+id/spinner_distribution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:minHeight="60dp"
+                    android:padding="10dp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:labelFor="@+id/edt_droplet_name"
-                        android:text="@string/droplet_name"
-                        android:textSize="15sp" />
+            </android.support.v7.widget.CardView>
 
-                    <EditText
-                        android:id="@+id/edt_droplet_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:hint="@string/give_a_name"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textSize="18sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/datacenter_region"
+                android:textSize="15sp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/llayout_chooseDistributionLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/choose_a_distribution"
-                        android:textSize="15sp" />
-
-                    <Spinner
-                        android:id="@+id/spinner_distribution"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp" />
-
-                </LinearLayout>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="16dp">
 
                 <LinearLayout
                     android:id="@+id/llayout_chooseRegionLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="60dp"
                     android:orientation="vertical"
+                    android:padding="10dp"
                     android:textSize="15sp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/datacenter_region"
-                        android:textSize="15sp" />
 
                     <Spinner
                         android:id="@+id/spinner_region"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Droplet Size"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/droplet_size"
                 android:textSize="16sp" />
 
-            <Spinner
-                android:id="@+id/spinner_size"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="16dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60dp"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <Spinner
+                        android:id="@+id/spinner_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/additional_options"
                 android:textSize="16sp" />
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="16dp">
 
-                <CheckBox
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/enable_ipv6_support" />
+                    android:orientation="vertical">
 
-                <CheckBox
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/private_networking" />
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switch_ipv6_droplet_create_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="18dp"
+                        android:text="@string/switch_ipv6" />
 
-                <CheckBox
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/backups" />
-            </LinearLayout>
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switch_private_network_droplet_create_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="18dp"
+                        android:text="@string/switch_private_network" />
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switch_backup_droplet_create_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="18dp"
+                        android:text="@string/switch_backup" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 

@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#012ba1</color>
     <color name="colorAccent">#15CD72</color>
     <color name="white">#ffffff</color>
+    <color name="bg_gray">#eee</color>
     <color name="colorSnapshot">#0052FF</color>
     <color name="colorResize">#15CD72</color>
-    <color name="colorDeatil">#676767</color>
+    <color name="colorDetail">#676767</color>
 </resources>
